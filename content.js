@@ -1,10 +1,11 @@
-// Change the background color of the webpage
-document.body.style.backgroundColor = 'lightblue'
+let selectedText = ''
+let lastSelectedText = ''
 
-// conosle log selected text
-document.addEventListener('mouseup', () => {
-	const selectedText = window.getSelection().toString()
-	if (selectedText) {
-		console.log(`Selected text: ${selectedText}`)
+window.addEventListener('mouseup', () => {
+	lastSelectedText = selectedText
+	selectedText = window.getSelection().toString()
+	if (selectedText && selectedText != lastSelectedText) {
+		// we can do whatever
+		console.log('Selected: ' + selectedText)
 	}
 })
