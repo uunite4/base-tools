@@ -28,12 +28,23 @@ const createContainer = (top, left, width, height) => {
 	cont.style.all = 'unset'
 	cont.style.backgroundColor = 'red'
 	cont.style.position = 'absolute'
-	cont.style.top = `${top}px`
-	cont.style.left = `${left}px`
+	cont.style.top = `${top + window.scrollY}px`
+	cont.style.left = `${left + window.scrollX}px`
 	cont.style.width = `${width}px`
 	cont.style.height = `${height}px`
 	cont.style.zIndex = '99999'
 	document.body.appendChild(cont)
 	cont.setAttribute('id', 'highlight-container')
 	return cont
+}
+
+const createFeatButton = (featName, featFunc, featIcon, container) => {
+	const featButton = document.createElement('button')
+	featButton.classList.add('feat-button')
+	featButton.value = featName
+	//Need to put featIcon inside the button
+	//Add a little popup with the featName
+	featButton.onclick = featFunc
+	container.appendChild(featButton)
+	return featButton
 }
