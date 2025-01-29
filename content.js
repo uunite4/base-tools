@@ -26,6 +26,7 @@ const createContainer = (top, left, width, height) => {
 	const cont = document.createElement('div')
 	cont.classList.add('BT-highlight-container')
 	cont.setAttribute('id', 'BT-highlight-container')
+	// set position and width & height
 	cont.style.top = `${top + window.scrollY}px`
 	cont.style.left = `${left + window.scrollX}px`
 	cont.style.width = `${width}px`
