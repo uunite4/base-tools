@@ -1,0 +1,18 @@
+.BT-highlight-container {
+	all: unset;
+	background-color: red;
+	position: absolute;
+	z-index: 999;
+}
+
+.BT-feat-btn {
+	position: absolute;
+	left: calc(50% - 0.75vw);
+	background-color: blue;
+	width: 1.5vw;
+	height: 1.5vw;
+	transform: translateY(-40px);
+	border: none;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+}
