@@ -3,3 +3,13 @@ body {
 	width: 200px;
 	height: 200px;
 }
+
+.feat-data {
+	left: calc(50% - 45vw);
+	top: calc(50% - 45vh);
+	position: absolute;
+	width: 90vw;
+	height: 90vh;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+	z-index: 9999;
+}
