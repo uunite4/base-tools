@@ -3,7 +3,7 @@
 	"name": "Base Tools",
 	"version": "1.0",
 	"description": "An extension that does basic actions for you.",
-	"permissions": ["activeTab", "storage"],
+	"permissions": ["activeTab", "storage", "scripting"],
 	"host_permissions": ["<all_urls>"],
 	"action": {
 		"default_popup": "popup.html",
@@ -12,7 +12,8 @@
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["content.js"],
+			"js": ["functionMap.js", "content.js"],
+			"run_at": "document_start",
 			"css": ["contentStyle.css"]
 		}
 	],

@@ -2,22 +2,14 @@ const defaultFeatures = [
   {
     name: "Copy",
     description: "Copies the highlighted text.",
-    featFunc: function (text) {
-      console.log("Work Copy")
-      navigator.clipboard.writeText(text)
-      // Add a small popup saying Copied!
-    },
+    featFunc: "copyFunction",
     shortcut: null,
     active: true,
   },
   {
     name: "Copy Uppercase",
     description: "Copies the highlighted text in uppercase letters.",
-    function: (text) => {
-      console.log("Work Copy Upper")
-      navigator.clipboard.writeText(text.toUpperCase())
-      // Add a small popup saying COPIED!
-    },
+    featFunc: "copyUpperFunction",
     shortcut: "u",
     defaultShortcut: "u",
     active: true,
@@ -26,11 +18,7 @@ const defaultFeatures = [
   {
     name: "Copy Lowercase",
     description: "Copies the highlighted text in lowercase letters.",
-    function: (text) => {
-      conosle.log("Work Copy Lower")
-      navigator.clipboard.writeText(text.toLowerCase())
-      // Add a small popup saying copied!
-    },
+    featFunc: "copyLowerFunction",
     shortcut: "l",
     defaultShortcut: "l",
     active: true,

@@ -31,16 +31,19 @@ window.addEventListener('mouseup', () => {
 	// it to the storage, so all we need to do to get the features is to read the chrome.storage.local !
 
 	chrome.storage.local.get("features", (result) => {
-		features = result
+		features = result.features
 
 		// STEP 3: GENERATE BUTTONS ACCORDING TO FEATURES
 
-		console.log(typeof features);
+		
 		console.log(features)
 
-		console.log(features.features[0])
+		features = features.map((feature) => {
+			...feature,
+			featFunc: window.functionMap.(feature.featFunc)
+		})
 
-		features.features.forEach((feat) => {
+		features.forEach((feat) => {
 			console.log("feature")
 			createFeatButton(feat.name, feat.function, "FEAT ICN", cont)
 		})
