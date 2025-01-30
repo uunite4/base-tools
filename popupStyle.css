@@ -5,6 +5,7 @@ body {
 }
 
 .feat-data {
+	display: none;
 	left: calc(50% - 45vw);
 	top: calc(50% - 45vh);
 	position: absolute;

@@ -2,14 +2,20 @@ const features = [
 	{
 		name: "Copy",
 		description: "Copies the highlighted text.",
-		function: copyFunc,
+		function: (text) => {
+			navigator.clipboard.writeText(text)
+			// Add a small popup saying Copied!
+		},
 		shortcut: none,
 		active: true,
 	},
 	{
 		name: "Copy Uppercase",
 		description: "Copies the highlighted text in uppercase letters.",
-		function: copyUpperFunc,
+		function: (text) => {
+			navigator.clipboard.writeText(text.toUpperCase())
+			// Add a small popup saying COPIED!
+		},
 		shortcut: "u",
 		defaultShortcut: "u",
 		active: true,
@@ -18,7 +24,10 @@ const features = [
 	{
 		name: "Copy Lowercase",
 		description: "Copies the highlighted text in lowercase letters.",
-		function: copyLowerFunc,
+		function: (text) => {
+			navigator.clipboard.writeText(text.toLowerCase())
+			// Add a small popup saying copied!
+		},
 		shortcut: "l",
 		defaultShortcut: "l",
 		active: true,
@@ -26,17 +35,14 @@ const features = [
 	}
 ]
 
-const copyFunc = (text) => {
-	navigator.clipboard.writeText(text)
-	// add a small popup saying Copied
+const smallPopup = (message) => {
+	const popupMessage = document.createElement("div")
+	popupMessage.classList.add("BT-popup-message")
+	popupMessage.innerHTML = message
+
 }
 
-const copyUpperFunc = (text) => {
-	navigator.clipboard.writeText(text.toUpperCase())
-	// add a small popup saying COPIED!
-}
 
-const copyLowerFunc = (text) => {
-	navigator.clipboard.writeText(text.toLowerCase())
-	// add a small popup saying copied!
-}
+
+
+
