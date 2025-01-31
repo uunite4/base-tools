@@ -7,9 +7,11 @@ window.addEventListener('mouseup', () => {
 	const selection = window.getSelection()
 	selectedText = selection.toString()
 	//Remove last highlight container
-	//if (document.getElementById('BT-highlight-container')) {
-	//	document.getElementById('BT-highlight-container').remove()
-	//}
+	if (document.getElementById('BT-highlight-container')) {
+		setTimeout(() => {
+  			document.getElementById('BT-highlight-container').remove()
+		}, 250);
+	}
 
 	if (selectedText == lastSelectedText || !selectedText) {
 		// no selected text OR bug fix when you click the same selected text
@@ -22,8 +24,6 @@ window.addEventListener('mouseup', () => {
 
 	const rect = selection.getRangeAt(0).getBoundingClientRect()
 	const cont = createContainer(rect.top, rect.left, rect.width, rect.height)
-	createFeatButton('Copy', () => console.log('Hello'), 'ICON', cont)
-
 	//STEP 2: GET DATA FROM POPUP.JS
 	// HOW?:
 	// The features data is stored in chrome.storage.local, the deafult features are set in backgroun.js,
@@ -35,18 +35,16 @@ window.addEventListener('mouseup', () => {
 
 		// STEP 3: GENERATE BUTTONS ACCORDING TO FEATURES
 
-		
-		console.log(features)
+		let newFeatures = features.map((feat) => ({
+  			...feat,
+  			featFunc: window.functionMap[feat.featFunc]
+		}));
 
-		features = features.map((feature) => {
-			...feature,
-			featFunc: window.functionMap.(feature.featFunc)
+		newFeatures.forEach((feat) => {
+			createFeatButton(feat.name, feat.featFunc, "FEAT ICN", cont, selectedText)
 		})
 
-		features.forEach((feat) => {
-			console.log("feature")
-			createFeatButton(feat.name, feat.function, "FEAT ICN", cont)
-		})
+		console.log(document.getElementsByClassName("BT-feat-btn"))
 	})
 
 
@@ -65,13 +63,12 @@ const createContainer = (top, left, width, height) => {
 	return cont
 }
 
-const createFeatButton = (featName, featFunc, featIcon, container) => {
+const createFeatButton = (featName, featFunc, featIcon, container, text) => {
 	const featButton = document.createElement('button')
 	featButton.classList.add('BT-feat-btn')
 	featButton.value = featName
 	//Need to put featIcon inside the button
 	//Add a little popup with the featName
-	featButton.onclick = featFunc
+	featButton.onclick = () => featFunc(text)
 	container.appendChild(featButton)
-	return featButton
 }
