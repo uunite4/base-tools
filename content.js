@@ -1,53 +1,58 @@
 let selectedText = ''
 let lastSelectedText = ''
-let features;
+let features
+let lastContainer
+
+const removeLastContainer = () => {
+	if (lastContainer) {
+		const containerToRemove = lastContainer // capture last container before it gets updated
+		lastContainer = null
+		setTimeout(() => {
+			containerToRemove.remove()
+		}, 250)
+	}
+}
 
 window.addEventListener('mouseup', () => {
 	lastSelectedText = selectedText
 	const selection = window.getSelection()
-	selectedText = selection.toString()
+	selectedText = selection.toString().trim()
 	//Remove last highlight container
-	if (document.getElementById('BT-highlight-container')) {
-		setTimeout(() => {
-  			document.getElementById('BT-highlight-container').remove()
-		}, 250);
-	}
 
 	if (selectedText == lastSelectedText || !selectedText) {
 		// no selected text OR bug fix when you click the same selected text
 		return
 	}
 
-	// all clear
+	//STEP 0: REMOVE LAST CONTAINER
+	removeLastContainer()
 
 	//STEP 1: CREATE CONTAINER
-
 	const rect = selection.getRangeAt(0).getBoundingClientRect()
 	const cont = createContainer(rect.top, rect.left, rect.width, rect.height)
+
+	lastContainer = cont
+
 	//STEP 2: GET DATA FROM POPUP.JS
 	// HOW?:
 	// The features data is stored in chrome.storage.local, the deafult features are set in backgroun.js,
 	// then, when we open popup.js we can customize it, when something changes in popup.js is updates
 	// it to the storage, so all we need to do to get the features is to read the chrome.storage.local !
 
-	chrome.storage.local.get("features", (result) => {
+	chrome.storage.local.get('features', (result) => {
 		features = result.features
 
 		// STEP 3: GENERATE BUTTONS ACCORDING TO FEATURES
 
 		let newFeatures = features.map((feat) => ({
-  			...feat,
-  			featFunc: window.functionMap[feat.featFunc]
-		}));
+			...feat,
+			featFunc: window.functionMap[feat.featFunc],
+		}))
 
 		newFeatures.forEach((feat) => {
-			createFeatButton(feat.name, feat.featFunc, "FEAT ICN", cont, selectedText)
+			createFeatButton(feat.name, feat.featFunc, 'FEAT ICN', cont, selectedText)
 		})
-
-		console.log(document.getElementsByClassName("BT-feat-btn"))
 	})
-
-
 })
 
 const createContainer = (top, left, width, height) => {
