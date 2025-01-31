@@ -12,25 +12,16 @@
 
 	left: calc(50% - 15px);
 
+	transform: scale(0.3);
+
 	background-color: blue;
 	width: 30px;
 	height: 30px;
-	transform: translateY(-40px);
+	/* transform: translateY(-40px); */
 	border: none;
 	border-radius: 5px;
 	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
 
 	pointer-events: all;
-}
-
-.BT-feat-btn:nth-child(1) {
-	transform: translate(-40px, -35px);
-}
-
-.BT-feat-btn:nth-child(2) {
-	transform: translate(0px, -40px);
-}
-
-.BT-feat-btn:nth-child(3) {
-	transform: translate(40px, -35px);
+	transition: 0.1s ease-out;
 }
