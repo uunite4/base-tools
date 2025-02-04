@@ -1,20 +1,20 @@
 const functionMap = {
-	copyFunction: (text) => {
+	copyFunction: (text, contUnused) => {
 		console.log("Work Copy")
       	navigator.clipboard.writeText(text)
       	// Add a small popup saying Copied!
 	},
-	copyUpperFunction: (text) => {
+	copyUpperFunction: (text, contUnused) => {
 		console.log("Work Upper Copy")
       	navigator.clipboard.writeText(text.toUpperCase())
       	// Add a small popup saying Copied!
 	},
-	copyLowerFunction: (text) => {
+	copyLowerFunction: (text, contUnused) => {
 		console.log("Work Lower Copy")
       	navigator.clipboard.writeText(text.toLowerCase())
       	// Add a small popup saying Copied!
 	},
-	translate: async (text) => {
+	translate: async (text, cont) => {
 		const trimText = text.trim()
 		const targetLang = "es"
 
@@ -46,11 +46,39 @@ const functionMap = {
     	}
 
     	const translateData = await translateResponse.json();
+
+
+    	// CREATE A BLOCK TO SHOW TEXT / ERROR
+
+    	console.log("Work?")
+
+    	const textBlock = document.createElement("span")
+    	
+    	console.log(textBlock)
+    	
+
     	if (translateData.responseStatus !== 200) {
-    	    throw new Error(`Translation error: ${translateData.responseDetails}`);
+    		// ERROR
+    		textBlock.innerHTML = "ERROR"
+    		textBlock.classList.add("translate-text translate-error")
+    	    // throw new Error(`Translation error: ${translateData.responseDetails}`);
+    	} else {
+    		const transText = translateData.responseData.translatedText
+    		textBlock.innerHTML = transText
+    		textBlock.classList.add("translate-text")
     	}
 
-    	console.log(translateData.responseData.translatedText) 
+    	const bottomPosition = parseInt(cont.style.top) + parseInt(cont.style.height) + 5
+    	textBlock.style.top = `${bottomPosition}px`
+    	textBlock.style.left = cont.style.left
+
+    	document.body.appendChild(textBlock)
+
+
+
+    	setTimeout(() => {
+    		textBlock.remove()
+    	}, 5000)
 	}
 }	
 

@@ -14,7 +14,7 @@
 
 	transform: scale(0.3);
 
-	background-color: white;
+	background-color: #232531;
 	width: 30px;
 	height: 30px;
 	/* transform: translateY(-40px); */
@@ -30,5 +30,20 @@
 }
 
 .BT-feat-btn span {
-	
+	filter: invert(100%);
+}
+
+.translate-text {
+	position: absolute;
+	color: white;
+	background-color: #232531;
+	padding-block: 0.2em;
+	padding-inline: 1.2em;
+	border-radius: 10px;
+	direction: rtl;
+	text-align: right;
+}
+
+.translate-error {
+	color: #d65563;
 }

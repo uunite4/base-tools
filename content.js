@@ -2,46 +2,6 @@
 //1. Add custom icon for coppy uppercase and lowercase features
 //2. Search for translate API
 
-async function detectAndTranslate(text, targetLang) {
-    // Step 1: Detect language
-    const detectResponse = await fetch('https://ws.detectlanguage.com/0.2/detect', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer 765d6c5ea0b4a407f176cebc0e1abef6',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ q: text })
-    });
-
-    if (!detectResponse.ok) {
-        throw new Error(`Language detection failed: ${detectResponse.statusText}`);
-    }
-
-    const detectData = await detectResponse.json();
-    const sourceLang = detectData.data.detections[0].language;
-
-    // Step 2: Translate text
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${targetLang}`;
-
-    const translateResponse = await fetch(url);
-    if (!translateResponse.ok) {
-        throw new Error(`Translation failed: ${translateResponse.statusText}`);
-    }
-
-    const translateData = await translateResponse.json();
-    if (translateData.responseStatus !== 200) {
-        throw new Error(`Translation error: ${translateData.responseDetails}`);
-    }
-
-    return translateData.responseData.translatedText;
-}
-
-// Example usage
-detectAndTranslate("Hola, ¿cómo estás?", "en")
-    .then(translatedText => console.log("Translated text:", translatedText))
-    .catch(error => console.error(error));
-
-
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
@@ -162,17 +122,17 @@ const createFeatButton = (
 	//add icons
 	const iconSpan = document.createElement("span")
 	iconSpan.classList.add("material-symbols-rounded")
-	iconSpan.textContent = 'content_copy'
+	iconSpan.textContent = featIcon
 
 	//style icon
-	iconSpan.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24"
-	iconSpan.style.fontSize = "1.4em"
+	iconSpan.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 100, 'opsz' 24"
+	iconSpan.style.fontSize = "1.2em"
 	iconSpan.style.color = "#000"
 
 	featButton.appendChild(iconSpan)
 
 	//Add a little popup with the featName
-	featButton.onclick = () => featFunc(text)
+	featButton.onclick = () => featFunc(text, container)
 	container.appendChild(featButton)
 
 	// do animation to place
