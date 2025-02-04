@@ -14,7 +14,7 @@
 
 	transform: scale(0.3);
 
-	background-color: blue;
+	background-color: white;
 	width: 30px;
 	height: 30px;
 	/* transform: translateY(-40px); */
@@ -24,4 +24,11 @@
 
 	pointer-events: all;
 	transition: 0.1s ease-out;
+
+	display: grid;
+	place-items: center;
+}
+
+.BT-feat-btn span {
+	
 }

@@ -1,7 +1,68 @@
+//TODO:
+//1. Add custom icon for coppy uppercase and lowercase features
+//2. Search for translate API
+
+async function detectAndTranslate(text, targetLang) {
+    // Step 1: Detect language
+    const detectResponse = await fetch('https://ws.detectlanguage.com/0.2/detect', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer 765d6c5ea0b4a407f176cebc0e1abef6',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ q: text })
+    });
+
+    if (!detectResponse.ok) {
+        throw new Error(`Language detection failed: ${detectResponse.statusText}`);
+    }
+
+    const detectData = await detectResponse.json();
+    const sourceLang = detectData.data.detections[0].language;
+
+    // Step 2: Translate text
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${targetLang}`;
+
+    const translateResponse = await fetch(url);
+    if (!translateResponse.ok) {
+        throw new Error(`Translation failed: ${translateResponse.statusText}`);
+    }
+
+    const translateData = await translateResponse.json();
+    if (translateData.responseStatus !== 200) {
+        throw new Error(`Translation error: ${translateData.responseDetails}`);
+    }
+
+    return translateData.responseData.translatedText;
+}
+
+// Example usage
+detectAndTranslate("Hola, ¿cómo estás?", "en")
+    .then(translatedText => console.log("Translated text:", translatedText))
+    .catch(error => console.error(error));
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+
+
 let selectedText = ''
 let lastSelectedText = ''
 let features
 let lastContainer
+
+// Inject icons
+const link = document.createElement("link")
+link.rel = "stylesheet"
+link.href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=content_copy,translate"
+link.crossOrigin = "anonymous"
+
+
+document.addEventListener("DOMContentLoaded", () => {
+	document.head.appendChild(link);
+})
 
 const removeLastContainer = () => {
 	if (lastContainer) {
@@ -10,7 +71,6 @@ const removeLastContainer = () => {
 		lastContainer = null
 
 		lastFeatureBtns.forEach((feature) => {
-			console.log(feature)
 			feature.style.transform = 'translate(0px, 0px) scale(0.3)'
 			feature.addEventListener('transitionend', () => feature.remove())
 		})
@@ -65,7 +125,7 @@ window.addEventListener('mouseup', () => {
 			createFeatButton(
 				feat.name,
 				feat.featFunc,
-				'FEAT ICN',
+				feat.icon,
 				cont,
 				selectedText,
 				window.featPos[i]
@@ -98,7 +158,19 @@ const createFeatButton = (
 	const featButton = document.createElement('button')
 	featButton.classList.add('BT-feat-btn')
 	featButton.value = featName
-	//Need to put featIcon inside the button
+
+	//add icons
+	const iconSpan = document.createElement("span")
+	iconSpan.classList.add("material-symbols-rounded")
+	iconSpan.textContent = 'content_copy'
+
+	//style icon
+	iconSpan.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24"
+	iconSpan.style.fontSize = "1.4em"
+	iconSpan.style.color = "#000"
+
+	featButton.appendChild(iconSpan)
+
 	//Add a little popup with the featName
 	featButton.onclick = () => featFunc(text)
 	container.appendChild(featButton)
