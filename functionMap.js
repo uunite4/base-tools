@@ -18,6 +18,24 @@ const functionMap = {
 		const trimText = text.trim()
 		const targetLang = "es"
 
+		//BLOCK
+		const bottomPosition = parseInt(cont.style.top) + parseInt(cont.style.height) + 10
+		const textBlock = document.createElement("span")
+		textBlock.style.top = `${bottomPosition}px`
+    	textBlock.style.left = cont.style.left
+    	// textBlock.style.width = "20px"
+    	// textBlock.style.height = "20px"
+    	document.body.appendChild(textBlock)
+
+		//LOADER
+
+		const loader = document.createElement("div")
+		loader.classList.add("translate-loader")
+    	loader.style.top = `${bottomPosition}px`
+    	loader.style.left = cont.style.left
+    	textBlock.appendChild(loader)
+
+
 		// Step 1: Detect language
     	const detectResponse = await fetch('https://ws.detectlanguage.com/0.2/detect', {
         	method: 'POST',
@@ -35,8 +53,6 @@ const functionMap = {
     	const detectData = await detectResponse.json();
     	const sourceLang = detectData.data.detections[0].language;
 
-    	console.log(trimText + " " + sourceLang)
-
     	// Step 2: Translate text
     	const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(trimText)}&langpair=${sourceLang}|he`;
 
@@ -49,12 +65,9 @@ const functionMap = {
 
 
     	// CREATE A BLOCK TO SHOW TEXT / ERROR
+    	loader.remove()
 
-    	console.log("Work?")
-
-    	const textBlock = document.createElement("span")
-    	
-    	console.log(textBlock)
+    	// const textBlock = document.createElement("span")
     	
 
     	if (translateData.responseStatus !== 200) {
@@ -68,11 +81,10 @@ const functionMap = {
     		textBlock.classList.add("translate-text")
     	}
 
-    	const bottomPosition = parseInt(cont.style.top) + parseInt(cont.style.height) + 5
-    	textBlock.style.top = `${bottomPosition}px`
-    	textBlock.style.left = cont.style.left
+    	// textBlock.style.top = `${bottomPosition}px`
+    	// textBlock.style.left = cont.style.left
 
-    	document.body.appendChild(textBlock)
+    	// document.body.appendChild(textBlock)
 
 
 

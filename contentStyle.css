@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
 .BT-highlight-container {
 	all: unset;
 	background-color: transparent;
@@ -40,8 +42,24 @@
 	padding-block: 0.2em;
 	padding-inline: 1.2em;
 	border-radius: 10px;
-	direction: rtl;
-	text-align: right;
+	font-family: sans-serif; 
+  font-weight: 400;
+}
+
+.translate-loader {
+	width: 15px;
+  height: 15px;
+/*	position: absolute;*/
+	border: 5px solid #4d5066;
+  border-radius: 50%;
+  border-top: 5px solid #36394a;
+  background-color: transparent;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .translate-error {
