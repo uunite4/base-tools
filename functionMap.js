@@ -23,8 +23,9 @@ const functionMap = {
 		const textBlock = document.createElement("span")
 		textBlock.style.top = `${bottomPosition}px`
     	textBlock.style.left = cont.style.left
-    	// textBlock.style.width = "20px"
-    	// textBlock.style.height = "20px"
+    	// textBlock.style.width = cont.style.width
+    	// textBlock.style.height = cont.style.height
+    	textBlock.classList.add("translate-text")
     	document.body.appendChild(textBlock)
 
 		//LOADER
@@ -65,10 +66,7 @@ const functionMap = {
 
 
     	// CREATE A BLOCK TO SHOW TEXT / ERROR
-    	loader.remove()
-
-    	// const textBlock = document.createElement("span")
-    	
+    	loader.remove()    	
 
     	if (translateData.responseStatus !== 200) {
     		// ERROR
@@ -78,19 +76,92 @@ const functionMap = {
     	} else {
     		const transText = translateData.responseData.translatedText
     		textBlock.innerHTML = transText
-    		textBlock.classList.add("translate-text")
     	}
-
-    	// textBlock.style.top = `${bottomPosition}px`
-    	// textBlock.style.left = cont.style.left
-
-    	// document.body.appendChild(textBlock)
-
-
 
     	setTimeout(() => {
     		textBlock.remove()
     	}, 5000)
+	},
+	convertCurrency: async (text, UnusedCont) => {
+		const response = {
+			isActive: "",
+			body: ""
+		}
+
+		if (text.replace( /[\$€£¥₹₽₪](\d){1,}(\.(\d){1,})?/ , "uunite") == "uunite") {
+			// text is good for replacment
+			response.isActive = true
+			
+			// STEP 1 : CHECK THE FIRST CHARACTER AND GET THE CODE (hardcoded)
+			const currencySymbl = text[0]
+			let currencyCode
+			switch (currencySymbl) {
+				case "$" :
+					currencyCode = "usd"
+					break
+				case "€" :
+					currencyCode = "eur"
+					break
+				case "£" :
+					currencyCode = "gbp"
+					break
+				case "¥" :
+					currencyCode = "jpy"
+					break
+				case "₹" :
+					currencyCode = "inr"
+					break
+				case "₽" :
+					currencyCode = "rub"
+					break
+				case "₪" :
+					currencyCode = "ils"
+					break
+				default:
+					currencyCode = "Not Supported"
+			}
+
+			// STEP 2 : GET THE CONVERSION RATE
+			const currencyConvertResp = await fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currencyCode}.json`)
+			const allExchangeRates = await currencyConvertResp.json()
+			console.log(allExchangeRates)
+			const exchangeRate = allExchangeRates[currencyCode].ils
+
+			// STEP 3 : CONVERT
+			const money = (parseInt(text.slice(1)) * exchangeRate).toFixed(2)
+
+			// STEP 4 : RETURN A NICE DESIGN
+			const moneyArr = money.toString().split(".").map(v => parseInt(v))
+			console.log(moneyArr)
+			response.body = `
+			<div class="BT-currency-exchange-cont">
+				<span class="BT-currency-exchange-symbl">₪</span>
+				<div class="BT-currency-exchange-num-cont">
+					<span class="BT-currency-exchange-num ${moneyArr[0] > 99 ? "bigger" : ""}">${moneyArr[0]}</span>
+					<span class="BT-currency-exchange-num-top ${moneyArr[0] > 99 ? "bigger" : ""}">${moneyArr[1]}</span>
+				</div>
+				
+			</div>`
+
+		} else {
+			response.isActive = false
+		}
+
+		return response
+	},
+	countWords: (text, contUnused) => {
+		const response = {
+			isActive: "",
+			body: ""
+		}
+		const wordsArr = text.trim().split(/\s+/).filter(word => word.length > 0)
+		if (wordsArr.length < 1) {
+			response.isActive = false
+		} else {
+			response.isActive = true
+			response.body = `<div class="BT-wordcount">${wordsArr.length}</div>`
+		}
+		return response
 	}
 }	
 

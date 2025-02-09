@@ -1,27 +1,24 @@
-//TODO:
-//1. Add custom icon for coppy uppercase and lowercase features
-//2. Search for translate API
-
-//----------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------
-
-
 let selectedText = ''
 let lastSelectedText = ''
 let features
 let lastContainer
 
 // Inject icons
+const icons = ["content_copy", "uppercase", "lowercase", "translate", "currency_exchange", "123"]
+const sortedIcons = icons.sort().join(",")
 const link = document.createElement("link")
 link.rel = "stylesheet"
-link.href = "https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=content_copy,translate"
+link.href = `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=${sortedIcons}`
 link.crossOrigin = "anonymous"
 
+//Inject Rubik
+const rubikLink = document.createElement("link")
+rubikLink.rel = "stylesheet"
+rubikLink.href = "https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
 
 document.addEventListener("DOMContentLoaded", () => {
 	document.head.appendChild(link);
+	document.head.appendChild(rubikLink)
 })
 
 const removeLastContainer = () => {
@@ -78,14 +75,12 @@ window.addEventListener('mouseup', () => {
 
 		features = features.map((feat) => ({
 			...feat,
-			featFunc: window.functionMap[feat.featFunc],
+			func: window.functionMap[feat.func],
 		}))
 
 		features.forEach((feat, i) => {
 			createFeatButton(
-				feat.name,
-				feat.featFunc,
-				feat.icon,
+				feat,
 				cont,
 				selectedText,
 				window.featPos[i]
@@ -108,35 +103,96 @@ const createContainer = (top, left, width, height) => {
 }
 
 const createFeatButton = (
-	featName,
-	featFunc,
-	featIcon,
+	feat,
 	container,
 	text,
 	pos
 ) => {
 	const featButton = document.createElement('button')
 	featButton.classList.add('BT-feat-btn')
-	featButton.value = featName
+	featButton.value = feat.name
 
 	//add icons
-	const iconSpan = document.createElement("span")
-	iconSpan.classList.add("material-symbols-rounded")
-	iconSpan.textContent = featIcon
+	if (feat.icon != "SELF-FUNCTIONAL"){
+		// has an icon
+		if (feat.icon != "MULTI") {
+			//normal icon
+			const iconSpan = createFeatButtonIcon(feat.icon, "Active")
+			featButton.appendChild(iconSpan)
+		} else {
+			// multi icon
+			const iconCont = document.createElement("div")
+			iconCont.classList.add("BT-icon-cont")
+			featButton.appendChild(iconCont)
 
-	//style icon
-	iconSpan.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 100, 'opsz' 24"
-	iconSpan.style.fontSize = "1.2em"
-	iconSpan.style.color = "#000"
+			const primeIcon = createFeatButtonIcon(feat.iconList.primary, "Active")
+			iconCont.appendChild(primeIcon)
 
-	featButton.appendChild(iconSpan)
+			const secoIconCont = document.createElement("div")
+			secoIconCont.classList.add("BT-icon-seco-cont")
+			iconCont.appendChild(secoIconCont)
 
+			const secoIcon = createFeatButtonIcon(feat.iconList.secondary, "Secondary")
+			secoIconCont.appendChild(secoIcon)
+		}
+		
+		// function
+		featButton.onclick = () => feat.func(text, container)
+	} else {
+		// doesn't have an icon
+
+		let resp
+		//STEP 0 : MAKE BOTH ASYNC AND SUNC FUNCTION (CONVERT CURRENCIES AND WORDCOUNT) RETURN A PROMISE
+		(async () => {
+    		resp = await Promise.resolve(feat.func(text, container));
+    
+    		// Code is normal now (I hate promises)
+    		// STEP 1 : CHECK IF THE TEXT WE HIGHLIGHTED IS ACTUALLY GOOD FOR THIS FUNCTION
+
+    		// The resp is an object that will have a property that
+			// is called 'isActive' (because I designed this code and I'm a genius)
+			if (resp.isActive) {
+				//resp's property 'body' holds the answer
+				featButton.innerHTML = resp.body
+			} else {
+				const iconSpan = createFeatButtonIcon(feat.inactiveIcon, "inActive")
+				featButton.appendChild(iconSpan)
+			}
+		})();
+	}
 	//Add a little popup with the featName
-	featButton.onclick = () => featFunc(text, container)
+
+
 	container.appendChild(featButton)
 
 	// do animation to place
 	requestAnimationFrame(() => {
-		featButton.style.transform = `translate(${pos.x}, ${pos.y}) scale(1)`
+		featButton.style.transform = `translate(${pos.x}, ${pos.y}) scale(1) rotate(${pos.rotation})`
 	})
+}
+
+
+const createFeatButtonIcon = (iconName, isActive) => {
+	const iconSpan = document.createElement("span")
+	iconSpan.classList.add("material-symbols-rounded")
+	iconSpan.textContent = iconName
+	//style icon
+	iconSpan.style.fontVariationSettings = "'FILL' 1, 'wght' 600, 'GRAD' 100, 'opsz' 24"
+	iconSpan.style.fontSize = `${iconName == "123" ? "1.7em" : "1.3em"}`
+	switch (isActive) {
+		case "Active":
+			iconSpan.style.color = "#fff"
+			break
+		case "inActive":
+			iconSpan.style.color = "#434659"
+			break
+		case "Secondary":
+			iconSpan.style.color = "#232531"
+			iconSpan.style.fontSize = "1em"
+			iconSpan.style.marginBottom = "5px"
+			iconSpan.style.marginLeft = "4px"
+			break
+
+	}
+	return iconSpan
 }
