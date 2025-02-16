@@ -4,7 +4,7 @@ let features
 let lastContainer
 
 // Inject icons
-const icons = ["content_copy", "uppercase", "lowercase", "translate", "currency_exchange", "123"]
+const icons = ["content_copy", "uppercase", "lowercase", "translate", "currency_exchange", "123", "search", "link", "download"]
 const sortedIcons = icons.sort().join(",")
 const link = document.createElement("link")
 link.rel = "stylesheet"
@@ -83,6 +83,7 @@ window.addEventListener('mouseup', () => {
 				feat,
 				cont,
 				selectedText,
+				i,
 				window.featPos[i]
 			)
 		})
@@ -106,22 +107,49 @@ const createFeatButton = (
 	feat,
 	container,
 	text,
+	index,
 	pos
 ) => {
 	const featButton = document.createElement('button')
 	featButton.classList.add('BT-feat-btn')
 	featButton.value = feat.name
 
-	//add icons
-	if (feat.icon != "SELF-FUNCTIONAL"){
-		// has an icon
-		if (feat.icon != "MULTI") {
-			//normal icon
-			const iconSpan = createFeatButtonIcon(feat.icon, "Active")
+
+	switch (feat.iconType) {
+  		case "NORMAL":
+
+  			const iconSpan = createFeatButtonIcon(feat.icon, "Active")
 			featButton.appendChild(iconSpan)
-		} else {
-			// multi icon
-			const iconCont = document.createElement("div")
+
+			// function
+			featButton.onclick = () => feat.func(text, container)
+
+    		break;
+  		case "SELF-FUNCTIONAL":
+
+  			let resp
+			//STEP 0 : MAKE BOTH ASYNC AND SUNC FUNCTION (CONVERT CURRENCIES AND WORDCOUNT) RETURN A PROMISE
+			(async () => {
+    			resp = await Promise.resolve(feat.func(text, container));
+    	
+    			// Code is normal now (I hate promises)
+    			// STEP 1 : CHECK IF THE TEXT WE HIGHLIGHTED IS ACTUALLY GOOD FOR THIS FUNCTION
+
+    			// The resp is an object that will have a property that
+				// is called 'isActive' (because I designed this code and I'm a genius)
+				if (resp.isActive) {
+					//resp's property 'body' holds the answer
+					featButton.innerHTML = featButton.innerHTML + resp.body
+				} else {
+					const iconSpan = createFeatButtonIcon(feat.inactiveIcon, "inActive")
+					featButton.appendChild(iconSpan)
+				}
+			})();
+
+    		break;
+  		case "MULTI":
+
+  			const iconCont = document.createElement("div")
 			iconCont.classList.add("BT-icon-cont")
 			featButton.appendChild(iconCont)
 
@@ -134,34 +162,36 @@ const createFeatButton = (
 
 			const secoIcon = createFeatButtonIcon(feat.iconList.secondary, "Secondary")
 			secoIconCont.appendChild(secoIcon)
-		}
-		
-		// function
-		featButton.onclick = () => feat.func(text, container)
-	} else {
-		// doesn't have an icon
 
-		let resp
-		//STEP 0 : MAKE BOTH ASYNC AND SUNC FUNCTION (CONVERT CURRENCIES AND WORDCOUNT) RETURN A PROMISE
-		(async () => {
-    		resp = await Promise.resolve(feat.func(text, container));
-    
-    		// Code is normal now (I hate promises)
-    		// STEP 1 : CHECK IF THE TEXT WE HIGHLIGHTED IS ACTUALLY GOOD FOR THIS FUNCTION
+			// function
+			featButton.onclick = () => feat.func(text, container)
 
-    		// The resp is an object that will have a property that
-			// is called 'isActive' (because I designed this code and I'm a genius)
-			if (resp.isActive) {
-				//resp's property 'body' holds the answer
-				featButton.innerHTML = resp.body
-			} else {
-				const iconSpan = createFeatButtonIcon(feat.inactiveIcon, "inActive")
+    		break;
+		case "ACTIVE-INACTIVE":
+
+			let active = feat.func(text, "Check")
+
+			if (active) {
+
+				const iconSpan = createFeatButtonIcon(feat.icon, "Active")
 				featButton.appendChild(iconSpan)
-			}
-		})();
-	}
-	//Add a little popup with the featName
 
+				// function
+				featButton.onclick = () => feat.func(text, "Act")
+
+			} else {
+
+				const iconSpan = createFeatButtonIcon(feat.icon, "inActive")
+				featButton.appendChild(iconSpan)
+
+			}
+
+    		break;
+	}	
+
+	//Add a little popup with the featName
+	createFeatButtonHover(feat.name, featButton)
+	featButton.style.zIndex = 10 - index
 
 	container.appendChild(featButton)
 
@@ -195,4 +225,12 @@ const createFeatButtonIcon = (iconName, isActive) => {
 
 	}
 	return iconSpan
+}
+
+const createFeatButtonHover = (featName, featBtn) => {
+	const hoverTxt = document.createElement("div")
+	hoverTxt.classList.add("BT-featbtn-hovertxt")
+	hoverTxt.innerHTML = featName
+	hoverTxt.style.zIndex = 100
+	featBtn.appendChild(hoverTxt)	
 }

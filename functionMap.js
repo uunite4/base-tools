@@ -162,6 +162,53 @@ const functionMap = {
 			response.body = `<div class="BT-wordcount">${wordsArr.length}</div>`
 		}
 		return response
+	},
+	googleSearch: (text, contUnused) => {
+		const url = `https://www.google.com/search?q=${encodeURIComponent(text)}`;
+    	window.open(url, '_blank');
+	},
+	openURL: (text, action) => {
+		const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/i;
+		switch (action) {
+			case "Check":
+				if (text.replace(urlRegex, "uunite") == "uunite") {
+					//this is a URL
+					return true
+				} else {
+					return false
+				}
+				break;
+			case "Act":
+				let link = text
+				if (!link.startsWith("http://") && !link.startsWith("https://")) {
+    				link = "https://" + link;
+				}
+				window.open(link, "_blank");
+				break;
+		}
+	},
+	download: (text, contUnused) => {
+  		const filename = `Base Tools Download.txt`; // Your desired filename
+
+		// Create Blob with the text
+		const blob = new Blob([text], { type: "text/plain" });
+
+		// Create temporary URL for the Blob
+  		const url = URL.createObjectURL(blob);
+
+		// Create hidden anchor element
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = filename; // Set filename
+		a.style.display = "none";
+
+		// Trigger download
+		document.body.appendChild(a);
+		a.click();
+
+		// Cleanup
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
 	}
 }	
 

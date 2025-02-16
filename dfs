@@ -1,0 +1,114 @@
+[33mcommit bc9a25ce84509ccd6eaaf01b2bcb31a106a92bd8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Sun Feb 9 14:04:15 2025 +0200
+
+    added currency exchange + wordcount, added second row, added uppercase and lowercase copy symbols
+
+[33mcommit 976a4da80cd52327f1991fe7cf48bc8bb14ac6d7[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Fri Feb 7 23:28:01 2025 +0200
+
+    added some styles, need to fix loading for translation
+
+[33mcommit 80899ace2deb30462d5295e1f2733ac2df1b9982[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Tue Feb 4 10:00:27 2025 +0200
+
+    did translate
+
+[33mcommit 69fc35c3605dfcb1783f1cb1d0bd92331daafc2e[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Tue Feb 4 08:28:39 2025 +0200
+
+    added translate feature (in the console), change the lang inside the translate function
+
+[33mcommit cb5d4b3cbf44493cc27aacace78cc8a6f6e4fad2[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Fri Jan 31 21:58:19 2025 +0200
+
+    added feature buttons animations
+
+[33mcommit 0f82cb645445dff52c14a2a4c61a30e540d1cbcd[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Fri Jan 31 20:46:46 2025 +0200
+
+    bug fix
+
+[33mcommit 195b00f9a975dfc4a62ee63084d5a7d2460e3ea0[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Fri Jan 31 12:10:39 2025 +0200
+
+    got the copy features working!
+
+[33mcommit 6a2372503ba8b03fb2308bc2536564dc5de05e66[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Thu Jan 30 15:31:14 2025 +0200
+
+    created functions, need to resolve ...
+
+[33mcommit 527950fbe89705c8d489eebb0ef78cb771985aab[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Thu Jan 30 12:31:30 2025 +0200
+
+    added feature btns, background.js is putting default features to storage.local and content.js reads them
+
+[33mcommit cd486b6eab69862d343df0b4ac695438b6a1af5b[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Wed Jan 29 11:28:03 2025 +0200
+
+    styled feature data but still need to work i=on z-index
+
+[33mcommit 0cfbd5c0e2c0c51d79407b36ab1772e80c2da23b[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Wed Jan 29 10:47:34 2025 +0200
+
+    add feature info section in popup.html (need to add the css to make it absolute and hidden). added some features data in popup.js
+
+[33mcommit c72d38ebc522025ec97320d9ea28534fab10382e[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Wed Jan 29 09:06:56 2025 +0200
+
+    Added contentStyle.css and styled feature button
+
+[33mcommit b8d78c541ffb9ef0507a2c8c54c5b790a72a0346[m
+Merge: fdb48d3 8862b44
+Author: uunite <avivhagay004@gmail.com>
+Date:   Mon Jan 27 22:34:33 2025 +0200
+
+    Merge branch 'master' of https://github.com/uunite4/base-tools
+
+[33mcommit fdb48d32d30cf6c265e1e6a9a7ece53931e71c95[m
+Author: uunite <avivhagay004@gmail.com>
+Date:   Mon Jan 27 22:29:00 2025 +0200
+
+    added create feature button function
+
+[33mcommit 8862b4475e01b005f0d0af8ec6cd7a551e1f62e1[m
+Author: uunite <91340977+uunite4@users.noreply.github.com>
+Date:   Mon Jan 27 17:53:37 2025 +0200
+
+    Update README.md
+
+[33mcommit e28dcf5a1a89bd91c8449bca640820cd938ea4be[m
+Author: uunite <91340977+uunite4@users.noreply.github.com>
+Date:   Mon Jan 27 17:53:16 2025 +0200
+
+    Create README.md
+
+[33mcommit 084d75ff6d4fe6ae4284d7079a273a23c6c49c8f[m
+Author: unknown <avivhagay004@gmail.com>
+Date:   Sat Jan 25 22:15:07 2025 +0200
+
+    a red div that appears everytime you highlight text
+
+[33mcommit 4310da6a0967eb58b9cee159519c9059145d1def[m
+Author: unknown <avivhagay004@gmail.com>
+Date:   Sat Jan 25 21:39:11 2025 +0200
+
+    extension now console logs the selected text
+
+[33mcommit dd9a0af93610cc39c45a488ed6b0bc9da4222abf[m
+Author: unknown <avivhagay004@gmail.com>
+Date:   Sat Jan 25 21:23:02 2025 +0200
+
+    First Commit! just created all the necesesry files and tested out the popup.html file and the content.js file
