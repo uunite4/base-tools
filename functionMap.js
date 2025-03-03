@@ -1,22 +1,23 @@
 const functionMap = {
-	copyFunction: (text, contUnused) => {
+	copyFunction: (text, settings) => {
 		console.log("Work Copy")
       	navigator.clipboard.writeText(text)
       	// Add a small popup saying Copied!
 	},
-	copyUpperFunction: (text, contUnused) => {
+	copyUpperFunction: (text, settings) => {
 		console.log("Work Upper Copy")
       	navigator.clipboard.writeText(text.toUpperCase())
       	// Add a small popup saying Copied!
 	},
-	copyLowerFunction: (text, contUnused) => {
+	copyLowerFunction: (text, settings) => {
 		console.log("Work Lower Copy")
       	navigator.clipboard.writeText(text.toLowerCase())
       	// Add a small popup saying Copied!
 	},
-	translate: async (text, cont) => {
+	translate: async (text, settings) => {
 		const trimText = text.trim()
 		const targetLang = "es"
+		const cont = settings.cont
 
 		//BLOCK
 		const bottomPosition = parseInt(cont.style.top) + parseInt(cont.style.height) + 10
@@ -82,7 +83,7 @@ const functionMap = {
     		textBlock.remove()
     	}, 5000)
 	},
-	convertCurrency: async (text, UnusedCont) => {
+	convertCurrency: async (text, settings) => {
 		const response = {
 			isActive: "",
 			body: ""
@@ -149,7 +150,7 @@ const functionMap = {
 
 		return response
 	},
-	countWords: (text, contUnused) => {
+	countWords: (text, settings) => {
 		const response = {
 			isActive: "",
 			body: ""
@@ -163,11 +164,11 @@ const functionMap = {
 		}
 		return response
 	},
-	googleSearch: (text, contUnused) => {
+	googleSearch: (text, settings) => {
 		const url = `https://www.google.com/search?q=${encodeURIComponent(text)}`;
     	window.open(url, '_blank');
 	},
-	openURL: (text, action) => {
+	openURL: (text, action, settings) => {
 		const urlRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/i;
 		switch (action) {
 			case "Check":
@@ -187,7 +188,7 @@ const functionMap = {
 				break;
 		}
 	},
-	download: (text, contUnused) => {
+	download: (text, settings) => {
   		const filename = `Base Tools Download.txt`; // Your desired filename
 
 		// Create Blob with the text
@@ -209,6 +210,15 @@ const functionMap = {
 		// Cleanup
 		document.body.removeChild(a);
 		URL.revokeObjectURL(url);
+	},
+	highlight: (text, settings) => {
+		const colorList = settings.options[0].options.map(v => v.default)
+		
+		for (i = 0; i < colorList.length; i++) {
+			const colorbtn = document.createElement("button")
+			colorbtn.classList.add("BT-hover-colorbtn")
+			
+		}
 	}
 }	
 

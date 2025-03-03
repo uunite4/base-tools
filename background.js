@@ -26,6 +26,7 @@ const allFeatures = [
     icon: "content_copy",
     shortcut: null,
     active: true,
+    settings: ["None"]
   },
   {
     name: "Copy Uppercase",
@@ -39,7 +40,8 @@ const allFeatures = [
     shortcut: "u",
     defaultShortcut: "u",
     active: false,
-    keyActive: true
+    keyActive: true,
+    settings: ["None"]
   },
   {
     name: "Copy Lowercase",
@@ -53,7 +55,8 @@ const allFeatures = [
     shortcut: "l",
     defaultShortcut: "l",
     active: false,
-    keyActive: true
+    keyActive: true,
+    settings: ["None"]
   },
   {
     name: "Translate",
@@ -168,6 +171,23 @@ const allFeatures = [
         options: ["Base Tools Download", "The highlighted text", {type: "text", placeholder: "Custom Text"}]
       }
     ]
+  },
+  {
+    name: "Highlight",
+    description: "Highlights the text permenently.",
+    func: "highlight",
+    iconType: "HOVER",
+    icon: "format_ink_highlighter",
+    active: true,
+    settings: [
+      {
+        name: "Colors",
+        description: "What are the 3 colors you want to be able to highlight with?",
+        type: "set",
+        options: [{type: "color", default: "#ff5252"}, {type: "color", default: "#5252ff"}, {type: "color", default: "#72ff52"}]
+      }
+    ],
+    hover: false
   }
 ]
 
@@ -177,19 +197,3 @@ chrome.runtime.onInstalled.addListener((details) => {
   chrome.storage.local.set({ features: defaultFeatures });
   console.log(details)
 })
-
-
-
-// switch (iconType) {
-//   case "NORMAL":
-//     break;
-//   case "SELF-FUNCTIONAL":
-//     break;
-//   case "MULTI":
-//     break;
-//   case "ACTIVE-INACTIVE":
-//     break;
-// }
-
-
-

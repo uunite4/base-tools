@@ -4,7 +4,7 @@ let features
 let lastContainer
 
 // Inject icons
-const icons = ["content_copy", "uppercase", "lowercase", "translate", "currency_exchange", "123", "search", "link", "download"]
+const icons = ["content_copy", "uppercase", "lowercase", "translate", "currency_exchange", "123", "search", "link", "download", "format_ink_highlighter"]
 const sortedIcons = icons.sort().join(",")
 const link = document.createElement("link")
 link.rel = "stylesheet"
@@ -81,6 +81,7 @@ window.addEventListener('mouseup', () => {
 		features.forEach((feat, i) => {
 			createFeatButton(
 				feat,
+				selection.getRangeAt(0),
 				cont,
 				selectedText,
 				i,
@@ -105,6 +106,7 @@ const createContainer = (top, left, width, height) => {
 
 const createFeatButton = (
 	feat,
+	range,
 	container,
 	text,
 	index,
@@ -114,23 +116,24 @@ const createFeatButton = (
 	featButton.classList.add('BT-feat-btn')
 	featButton.value = feat.name
 
+	const passSettings = {range: range, cont: container, options: feat.settings}
 
 	switch (feat.iconType) {
-  		case "NORMAL":
+  		case "NORMAL": {
 
   			const iconSpan = createFeatButtonIcon(feat.icon, "Active")
 			featButton.appendChild(iconSpan)
 
 			// function
-			featButton.onclick = () => feat.func(text, container)
+			featButton.onclick = () => feat.func(text, passSettings)
 
-    		break;
-  		case "SELF-FUNCTIONAL":
+    		break; }
+  		case "SELF-FUNCTIONAL": {
 
   			let resp
 			//STEP 0 : MAKE BOTH ASYNC AND SUNC FUNCTION (CONVERT CURRENCIES AND WORDCOUNT) RETURN A PROMISE
 			(async () => {
-    			resp = await Promise.resolve(feat.func(text, container));
+    			resp = await Promise.resolve(feat.func(text, passSettings));
     	
     			// Code is normal now (I hate promises)
     			// STEP 1 : CHECK IF THE TEXT WE HIGHLIGHTED IS ACTUALLY GOOD FOR THIS FUNCTION
@@ -146,8 +149,8 @@ const createFeatButton = (
 				}
 			})();
 
-    		break;
-  		case "MULTI":
+    		break; }
+  		case "MULTI": {
 
   			const iconCont = document.createElement("div")
 			iconCont.classList.add("BT-icon-cont")
@@ -164,20 +167,20 @@ const createFeatButton = (
 			secoIconCont.appendChild(secoIcon)
 
 			// function
-			featButton.onclick = () => feat.func(text, container)
+			featButton.onclick = () => feat.func(text, passSettings)
 
-    		break;
-		case "ACTIVE-INACTIVE":
+    		break; }
+		case "ACTIVE-INACTIVE": {
 
 			let active = feat.func(text, "Check")
 
 			if (active) {
 
-				const iconSpan = createFeatButtonIcon(feat.icon, "Active")
+				const iconSpan = createFeatButtonIcon(feat.icon, "Active", passSettings)
 				featButton.appendChild(iconSpan)
 
 				// function
-				featButton.onclick = () => feat.func(text, "Act")
+				featButton.onclick = () => feat.func(text, "Act", passSettings)
 
 			} else {
 
@@ -186,7 +189,18 @@ const createFeatButton = (
 
 			}
 
-    		break;
+    		break; }
+    	case "HOVER": {
+
+    		featButton.onmouseenter = () => feat.func(text, passSettings)
+
+    		const iconSpan = createFeatButtonIcon(feat.icon, "Active")
+			featButton.appendChild(iconSpan)
+
+			// function
+
+			break; }
+
 	}	
 
 	//Add a little popup with the featName
